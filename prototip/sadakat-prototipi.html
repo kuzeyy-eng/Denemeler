@@ -6,10 +6,10 @@
 <style>
 /* Layout: üstte görünüm sekmeleri ve demo şeridi; altında kasa tableti ve müşteri telefonu yan yana (dar ekranda alt alta), ayrı sekmede sahip paneli. */
 :root{
-  --bg:#F2F4F1; --surface:#FFFFFF; --surface-2:#E6EBE6; --ink:#1E1A17; --muted:#5C645E; --line:#D3DAD3;
-  --accent:#1F6B5C; --accent-ink:#FFFFFF; --accent-soft:#CFE6DF;
-  --card:#23201D; --card-ink:#F3F1EC;
-  --t-yeni:#6F8077; --t-mudavim:#B0622F; --t-altin:#BE951A;
+  --bg:#FAF7F7; --surface:#FFFFFF; --surface-2:#F1EAEB; --ink:#231A1C; --muted:#6B5E61; --line:#E5D9DB;
+  --accent:#7B1E2C; --accent-ink:#FFFFFF; --accent-soft:#F4DCE0;
+  --card:#5C1420; --card-ink:#FFF6F6;
+  --t-yeni:#6F8077; --t-mudavim:#2F6690; --t-altin:#BE951A;
   --ok:#2E7D4F; --warn:#A86B12; --bad:#B23B3B; --on-bad:#FFFFFF;
   --qr-bg:#FFFFFF; --qr-ink:#141414; --frame:#2A2622;
   --f-display:'Bricolage Grotesque','Inter',system-ui,sans-serif;
@@ -18,20 +18,20 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#131615; --surface:#1B1F1D; --surface-2:#242A27; --ink:#ECEFEA; --muted:#9BA49D; --line:#313833;
-    --accent:#4FB39C; --accent-ink:#0D1A16; --accent-soft:#1E3A33;
-    --card:#2A302D; --card-ink:#F1F3EF;
-    --t-yeni:#93A59A; --t-mudavim:#D58753; --t-altin:#DDB53B;
+    --bg:#161213; --surface:#1F191A; --surface-2:#2A2223; --ink:#F3ECEC; --muted:#AA9C9E; --line:#3A2F31;
+    --accent:#D86A7A; --accent-ink:#1C0B0F; --accent-soft:#40202A;
+    --card:#4A1721; --card-ink:#FFF3F3;
+    --t-yeni:#9AA9A0; --t-mudavim:#79AEDA; --t-altin:#DDB53B;
     --ok:#5CC08A; --warn:#E3AA4C; --bad:#E36D6D; --on-bad:#1A0D0D;
     --qr-bg:#FFFFFF; --qr-ink:#141414; --frame:#0A0C0B;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#131615; --surface:#1B1F1D; --surface-2:#242A27; --ink:#ECEFEA; --muted:#9BA49D; --line:#313833;
-  --accent:#4FB39C; --accent-ink:#0D1A16; --accent-soft:#1E3A33;
-  --card:#2A302D; --card-ink:#F1F3EF;
-  --t-yeni:#93A59A; --t-mudavim:#D58753; --t-altin:#DDB53B;
+  --bg:#161213; --surface:#1F191A; --surface-2:#2A2223; --ink:#F3ECEC; --muted:#AA9C9E; --line:#3A2F31;
+  --accent:#D86A7A; --accent-ink:#1C0B0F; --accent-soft:#40202A;
+  --card:#4A1721; --card-ink:#FFF3F3;
+  --t-yeni:#9AA9A0; --t-mudavim:#79AEDA; --t-altin:#DDB53B;
   --ok:#5CC08A; --warn:#E3AA4C; --bad:#E36D6D; --on-bad:#1A0D0D;
   --qr-bg:#FFFFFF; --qr-ink:#141414; --frame:#0A0C0B;
   color-scheme:dark;
@@ -139,7 +139,7 @@ button{font-family:inherit}
 .tiercard{--tc:var(--t-yeni);background:var(--card);color:var(--card-ink);border-radius:24px;padding:20px 20px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px}
 .tiercard .ring{position:absolute;right:-46px;top:-46px;width:170px;height:170px;border-radius:50%;border:20px solid var(--tc);opacity:.95}
 .tiercard .eyebrow{color:color-mix(in oklab,var(--card-ink) 62%,transparent)}
-.tiercard .lvl{font:800 2.4rem/1 var(--f-display);color:var(--tc);margin:2px 0 4px;letter-spacing:-.02em}
+.tiercard .lvl{font:800 2.4rem/1 var(--f-display);color:var(--card-ink);margin:2px 0 4px;letter-spacing:-.02em}
 .tiercard .cnt b,.tiercard .next b{font-variant-numeric:tabular-nums}
 .progress{height:8px;border-radius:99px;background:color-mix(in oklab,var(--card-ink) 16%,transparent);overflow:hidden;margin-top:6px}
 .progress i{display:block;height:100%;background:var(--tc);border-radius:99px}
@@ -194,7 +194,7 @@ details.kvkk p{margin:8px 0 2px}
 .stripes{position:absolute;inset:0;background:repeating-linear-gradient(135deg,color-mix(in oklab,var(--tc) 34%,transparent) 0 18px,transparent 18px 36px);background-size:51px 51px;animation:drift 1.6s linear infinite;opacity:.55}
 @keyframes drift{from{background-position:0 0}to{background-position:51px 0}}
 .cbody{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:32px 24px;background:radial-gradient(circle at 50% 45%,var(--card) 0 52%,transparent 80%)}
-.cbody h2{font:800 1.8rem/1.1 var(--f-display);margin:0;color:var(--tc)}
+.cbody h2{font:800 1.8rem/1.1 var(--f-display);margin:0;color:var(--card-ink)}
 .cbody p{margin:0}
 .cbody .clock{font:600 2.6rem var(--f-mono);letter-spacing:.02em}
 .cbody .eyebrow{color:color-mix(in oklab,var(--card-ink) 65%,transparent)}
@@ -239,6 +239,51 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .settings .err{margin:10px 0 0}
 .settings .actions{margin-top:14px}
 
+/* Geri bildirim */
+.fb{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.fb .phead{margin-bottom:0}
+.fb .phead p{max-width:62ch}
+.fbform{display:flex;flex-direction:column;gap:20px}
+.seg{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:12px}
+.seg label{position:relative;flex:1;text-align:center;padding:10px;border-radius:9px;cursor:pointer;font-weight:600;color:var(--muted)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+fieldset.q{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+fieldset.q legend{font-weight:600;padding:0;margin-bottom:8px;text-wrap:balance}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale-ends{display:flex;justify-content:space-between;gap:12px;font-size:.75rem;color:var(--muted)}
+.choices{display:flex;flex-wrap:wrap;gap:6px}
+.pick{position:relative}
+.pick input{position:absolute;opacity:0;pointer-events:none}
+.pick span{display:block;text-align:center;padding:11px 6px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--surface);font-weight:600}
+.choices .pick span{padding:9px 14px}
+.pick input:checked + span{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.pick input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.fl{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.875rem}
+.fl .opt{font-weight:400;color:var(--muted)}
+textarea{font:inherit;font-weight:400;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);width:100%;min-height:96px;resize:vertical}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.fbthanks{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:28px 8px}
+.fbthanks h3{font:700 1.4rem var(--f-display);margin:0}
+.fbthanks .btn{max-width:280px}
+.state{font-size:.8125rem;padding:10px 12px;border-radius:10px;background:var(--surface-2);color:var(--muted)}
+.fbres{display:flex;flex-direction:column;gap:18px;margin-top:14px}
+.fbres h4{margin:0;font:700 .98rem var(--f-display)}
+.res-role{display:flex;flex-direction:column;gap:14px}
+.res-q{display:flex;flex-direction:column;gap:6px;font-size:.875rem}
+.avg{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;display:block;min-width:40px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.avg b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;min-width:4.5rem;text-align:right}
+.dist{display:grid;grid-template-columns:auto 1fr auto;gap:5px 10px;align-items:center;font-size:.8125rem}
+.dist b{font-variant-numeric:tabular-nums;text-align:right}
+.answers{list-style:none;margin:0;padding:0}
+.answers li{padding:12px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px;font-size:.875rem}
+.answers .meta{display:flex;gap:8px;align-items:center;font-size:.75rem;color:var(--muted);flex-wrap:wrap}
+.answers p{margin:0;overflow-wrap:anywhere}
+.linkbtn{background:none;border:0;color:var(--bad);cursor:pointer;font:600 .75rem var(--f-body);padding:2px 4px;margin-left:auto}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
@@ -253,6 +298,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <nav class="tabs" role="tablist" aria-label="Görünüm">
       <button role="tab" id="tab-akis" aria-selected="true" data-act="view" data-v="akis">Kasa ve müşteri</button>
       <button role="tab" id="tab-panel" aria-selected="false" data-act="view" data-v="panel">Sahip paneli</button>
+      <button role="tab" id="tab-fb" aria-selected="false" data-act="view" data-v="fb">Geri bildirim</button>
     </nav>
   </header>
 
@@ -288,6 +334,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
           <li>Üstteki <b>+1 gün</b> ile ertesi güne geçip tekrar dene. Damgalar dolar, seviye yükselir. Aynı gün ikinci ziyaret reddedilir.</li>
           <li>Bir ödülü <b>kaydırarak</b> kullan. Telefonda canlı saatli bir onay ekranı çıkar, aynı işlem tablette de görünür.</li>
           <li><b>+30 gün</b> ile uzun süre gelmeyen müşterinin seviyesinin nasıl düştüğünü gör. Rakamları <b>Sahip paneli</b>nden değiştir.</li>
+          <li>Denedikten sonra <b>Geri bildirim</b> sekmesindeki kısa formu doldur.</li>
         </ol>
       </div>
     </section>
@@ -295,6 +342,14 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <section id="view-panel" hidden>
       <div id="panel-data"></div>
       <div id="panel-settings"></div>
+    </section>
+
+    <section id="view-fb" hidden>
+      <div class="fb">
+        <div class="phead"><div><h2>Geri bildirim</h2><p class="muted">Bu sekmeyi kasadaki tablette aç. Personelin ve birkaç müdavimin önce "Kasa ve müşteri" sekmesinde prototipi denesin, sonra bu kısa formu doldursun. Her cevap kaydedilir, form sıradaki kişi için temizlenir.</p></div></div>
+        <div class="card" id="fb-form"></div>
+        <div class="card" id="fb-results"></div>
+      </div>
     </section>
   </main>
 </div>
@@ -717,9 +772,15 @@ document.addEventListener('click', e => {
   switch (act){
     case 'view': {
       const v = a.dataset.v;
-      $('#view-akis').hidden = v !== 'akis'; $('#view-panel').hidden = v !== 'panel';
-      document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === v)));
-      if (v === 'panel') renderPanel();
+      showView(v);
+      try { location.hash = HASH[v]; } catch (_) {}
+      break;
+    }
+    case 'fb-next': fbDone = false; renderFbForm(); window.scrollTo({top:0}); break;
+    case 'fb-toggle': fbShow = !fbShow; renderFbResults(); break;
+    case 'fb-del': {
+      if (!a.dataset.armed){ a.dataset.armed = '1'; a.textContent = 'Emin misin? Sil'; return; }
+      if (FBDB){ a.disabled = true; FBDB.collection('feedback').doc(a.dataset.id).delete().catch(() => { a.disabled = false; a.textContent = 'Silinemedi, tekrar dene'; delete a.dataset.armed; }); }
       break;
     }
     case 'issue': issueToken(); break;
@@ -753,10 +814,144 @@ document.addEventListener('click', e => {
     case 'defaults': S.settings = Object.assign(DEFAULTS(), {cafe:S.settings.cafe}); renderSettings(); renderAll(); break;
   }
 });
-document.addEventListener('submit', e => { if (e.target.id === 'signup') submitSignup(e); });
+document.addEventListener('submit', e => { if (e.target.id === 'signup') submitSignup(e); if (e.target.id === 'fbf') submitFb(e); });
 document.addEventListener('input', e => { if (e.target.closest('#panel-settings')) applySettings(); });
-document.addEventListener('change', e => { if (e.target.id === 'set-window') applySettings(); });
+document.addEventListener('change', e => {
+  if (e.target.id === 'set-window') applySettings();
+  if (e.target.name === 'fb-role'){ fbRole = e.target.value; renderFbForm(); }
+});
+
+/* Görünümler */
+const HASH = {akis:'', panel:'panel', fb:'geri-bildirim'};
+function showView(v){
+  ['akis','panel','fb'].forEach(k => { $('#view-' + k).hidden = k !== v; });
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === v)));
+  if (v === 'panel') renderPanel();
+}
+const fromHash = () => { const h = location.hash.slice(1); return h === 'panel' ? 'panel' : h === 'geri-bildirim' ? 'fb' : 'akis'; };
+window.addEventListener('hashchange', () => showView(fromHash()));
+
+/* Geri bildirim: cevaplar artifact veritabanında "feedback" koleksiyonunda tutulur */
+const FBQ = {
+  musteri: [
+    {id:'anlasilir', type:'scale', q:'Seviyeler (Yeni, Müdavim, Altın) ne kadar anlaşılır?', lo:'Hiç anlaşılmıyor', hi:'Çok net'},
+    {id:'qr', type:'scale', q:'Her ziyarette kasada QR okutmak sana ne kadar kolay gelir?', lo:'Çok zahmetli', hi:'Çok kolay'},
+    {id:'telefon', type:'scale', q:'Kayıtta telefon numaranı vermek ne kadar rahat?', lo:'Hiç rahat değil', hi:'Sorun değil'},
+    {id:'katilir', type:'choice', q:'Bu programa katılır mıydın?', opts:['Evet','Belki','Hayır']},
+    {id:'odul', type:'choice', q:'Seni en çok hangi ödül tekrar getirir?', opts:['Bedava kahve','Doğum günü ikramı','Yeni ürünleri ilk deneme','İndirim']}
+  ],
+  personel: [
+    {id:'yogun', type:'scale', q:'Yoğun saatte her satıştan sonra "Ziyaret ver"e basmak ne kadar mümkün?', lo:'İmkânsız', hi:'Hiç sorun değil'},
+    {id:'onay', type:'scale', q:'Ödül onay ekranını kontrol etmek ne kadar kolay?', lo:'Çok zor', hi:'Çok kolay'},
+    {id:'anlatma', type:'scale', q:'Programı müşteriye anlatmak ne kadar kolay olur?', lo:'Çok zor', hi:'Çok kolay'},
+    {id:'kullanir', type:'choice', q:'Müdavimlerin çoğu bunu kullanır mı?', opts:['Evet','Belki','Hayır']},
+    {id:'sorun', type:'choice', q:'En çok nerede sorun çıkar?', opts:['Yoğun saat','Müşteriye anlatmak','Hile','Teknik arıza']}
+  ]
+};
+const ROLE = {musteri:'Müşteri', personel:'Personel'};
+let FBDB = null, FBCAN = true, FBEDIT = false, FBROWS = [], FBSTATE = 'loading';
+let fbRole = 'musteri', fbDone = false, fbShow = false, fbBusy = false;
+
+function qHtml(q, i){
+  const name = 'fbq-' + q.id;
+  if (q.type === 'scale') return `<fieldset class="q"><legend>${i + 1}. ${esc(q.q)}</legend><div class="scale">${[1,2,3,4,5].map(n => `<label class="pick"><input type="radio" id="${name}-${n}" name="${name}" value="${n}"><span>${n}</span></label>`).join('')}</div><div class="scale-ends"><span>1 · ${esc(q.lo)}</span><span>5 · ${esc(q.hi)}</span></div></fieldset>`;
+  return `<fieldset class="q"><legend>${i + 1}. ${esc(q.q)}</legend><div class="choices">${q.opts.map((o, k) => `<label class="pick"><input type="radio" id="${name}-${k}" name="${name}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div></fieldset>`;
+}
+function renderFbForm(){
+  const el = $('#fb-form');
+  if (fbDone){
+    el.innerHTML = `<div class="fbthanks"><div class="mark">${IC.check}</div><h3>Teşekkürler!</h3><p class="muted">Cevabın kaydedildi. Tableti sıradaki kişiye verebilirsin.</p><button class="btn primary" data-act="fb-next">Sıradaki kişi</button></div>`;
+    return;
+  }
+  const note = FBSTATE === 'off' ? '<p class="state">Bu görünümde cevaplar kaydedilemiyor. Sayfayı claude.ai\'de oturum açmışken aç.</p>'
+    : !FBCAN ? '<p class="state">Bu sayfada cevap kaydetmek için Katkıda bulunan (Contributor) ya da daha yüksek yetki gerekiyor.</p>'
+    : !FBDB ? '<p class="state">Kayıt sistemine bağlanılıyor…</p>' : '';
+  el.innerHTML = `<form id="fbf" class="fbform" novalidate>
+    <div><p class="eyebrow" style="margin-bottom:8px">Kimsin?</p><div class="seg" role="radiogroup" aria-label="Rol">${Object.keys(ROLE).map(v => `<label><input type="radio" id="fb-role-${v}" name="fb-role" value="${v}" ${fbRole === v ? 'checked' : ''}>${ROLE[v]}</label>`).join('')}</div></div>
+    ${FBQ[fbRole].map(qHtml).join('')}
+    <label class="fl" for="fb-comment">Eklemek istediğin bir şey var mı? <span class="opt">(isteğe bağlı)</span><textarea id="fb-comment" maxlength="1000" placeholder="${fbRole === 'musteri' ? 'Örn. Doğum günü ikramı çok hoş olur' : 'Örn. Sabah 8-9 arası düğmeye basmaya vakit olmaz'}"></textarea></label>
+    <label class="fl" for="fb-name">Adın <span class="opt">(isteğe bağlı)</span><input id="fb-name" maxlength="60" autocomplete="off"></label>
+    <p class="err" id="fb-err"></p>
+    ${note}
+    <button class="btn primary" type="submit" ${FBDB && FBCAN ? '' : 'disabled'}>Gönder</button>
+  </form>`;
+}
+async function submitFb(e){
+  e.preventDefault();
+  if (fbBusy || !FBDB) return;
+  const f = $('#fbf'), ans = {}; let missing = 0;
+  FBQ[fbRole].forEach(q => { const c = f.querySelector(`input[name="fbq-${q.id}"]:checked`); if (!c){ missing++; return; } ans[q.id] = q.type === 'scale' ? Number(c.value) : c.value; });
+  if (missing){ $('#fb-err').textContent = missing + ' soru cevapsız kaldı. Hepsini işaretle; yorum ve ad isteğe bağlı.'; return; }
+  fbBusy = true;
+  const btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Gönderiliyor…';
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  try {
+    await FBDB.collection('feedback').doc(id).set({role:fbRole, answers:ans, comment:$('#fb-comment').value.trim().slice(0, 1000), name:$('#fb-name').value.trim().slice(0, 60), at:new Date().toISOString(), v:1});
+    fbDone = true; renderFbForm(); window.scrollTo({top:0});
+  } catch (err){
+    const code = err && err.code;
+    if (code === 'invalid_argument') FBCAN = false;
+    $('#fb-err').textContent = code === 'invalid_argument' ? 'Kaydedilemedi: bu sayfada cevap kaydetmek için Katkıda bulunan (Contributor) yetkisi gerekiyor.'
+      : code === 'quota_exceeded' ? 'Kaydedilemedi: depolama alanı dolu.' : 'Kaydedilemedi. Bağlantını kontrol edip tekrar dene.';
+    btn.disabled = !FBCAN; btn.textContent = 'Gönder';
+  }
+  fbBusy = false;
+}
+function roleSummary(role){
+  const rows = FBROWS.filter(r => r.role === role);
+  if (!rows.length) return `<div class="res-role"><h4>${ROLE[role]} · 0 cevap</h4><p class="small muted">Henüz cevap yok.</p></div>`;
+  return `<div class="res-role"><h4>${ROLE[role]} · ${rows.length} cevap</h4>${FBQ[role].map(q => {
+    const vals = rows.map(r => r.answers && r.answers[q.id]).filter(v => v != null);
+    if (q.type === 'scale'){
+      const nums = vals.map(Number).filter(x => x >= 1 && x <= 5), avg = nums.length ? nums.reduce((a, b) => a + b, 0) / nums.length : 0;
+      return `<div class="res-q"><span>${esc(q.q)}</span><div class="avg"><span class="bar"><i style="width:${avg / 5 * 100}%"></i></span><b>${nums.length ? avg.toFixed(1).replace('.', ',') : '–'} / 5</b></div></div>`;
+    }
+    const counts = q.opts.map(o => [o, vals.filter(v => v === o).length]), max = Math.max(1, ...counts.map(c => c[1]));
+    return `<div class="res-q"><span>${esc(q.q)}</span><div class="dist">${counts.map(([o, c]) => `<span>${esc(o)}</span><span class="bar"><i style="width:${c / max * 100}%"></i></span><b class="mono">${c}</b>`).join('')}</div></div>`;
+  }).join('')}</div>`;
+}
+function renderFbResults(){
+  const el = $('#fb-results');
+  const head = `<div class="row"><h3 style="margin:0">Sonuçlar · ${FBROWS.length} cevap</h3><button class="chip" data-act="fb-toggle">${fbShow ? 'Sonuçları gizle' : 'Sonuçları göster'}</button></div>`;
+  if (!fbShow){ el.innerHTML = head + '<p class="small muted" style="margin-top:8px">Form doldurulurken başkalarının cevapları görünmesin diye kapalı.</p>'; return; }
+  let body;
+  if (FBSTATE === 'off') body = '<p class="state">Bu görünümde kayıtlı cevaplar okunamıyor.</p>';
+  else if (FBSTATE === 'err') body = '<p class="state">Cevaplar şu an okunamıyor. Sayfayı daha sonra yeniden aç.</p>';
+  else if (FBSTATE === 'loading') body = '<p class="state">Cevaplar yükleniyor…</p>';
+  else if (!FBROWS.length) body = FBSTATE === 'slow' ? '<p class="state">Kayıt sistemine ulaşılamıyor. Bağlantı gelince cevaplar burada görünecek.</p>' : '<p class="state">Henüz cevap yok. İlk cevap geldiğinde burada rol bazında ortalamalar, dağılımlar ve yorumlar görünecek.</p>';
+  else {
+    const sorted = [...FBROWS].sort((a, b) => String(b.at || '').localeCompare(String(a.at || ''))).slice(0, 60);
+    const when = s => { const d = new Date(s); return isNaN(d) ? '' : d.toLocaleString('tr-TR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); };
+    body = (FBSTATE === 'slow' ? '<p class="state">Kayıt sistemine ulaşılamıyor; gösterilenler güncel olmayabilir.</p>' : '')
+      + `<div class="cols" style="margin:0">${roleSummary('musteri')}${roleSummary('personel')}</div>`
+      + `<div><h4>Tüm cevaplar</h4><ul class="answers">${sorted.map(r => `<li><div class="meta"><span class="pill">${ROLE[r.role] || 'Bilinmiyor'}</span><span>${esc(r.name || 'İsimsiz')}</span><span>${when(r.at)}</span>${FBEDIT ? `<button class="linkbtn" data-act="fb-del" data-id="${esc(r.id)}">Sil</button>` : ''}</div><p class="${r.comment ? '' : 'muted'}">${r.comment ? esc(r.comment) : 'Yorum yazılmadı.'}</p></li>`).join('')}</ul></div>`;
+  }
+  el.innerHTML = head + `<div class="fbres">${body}</div>`;
+}
+async function initFb(){
+  renderFbForm(); renderFbResults();
+  const c = window.claude;
+  if (!c || typeof c.use !== 'function'){ FBSTATE = 'off'; renderFbForm(); renderFbResults(); return; }
+  const timer = setTimeout(() => { if (FBSTATE === 'loading' || FBSTATE === 'cache'){ FBSTATE = 'slow'; renderFbResults(); } }, 10000);
+  let db = null, user = null;
+  try { [db, user] = await Promise.all([c.use('db'), c.use('user')]); } catch (_) {}
+  if (!db){ clearTimeout(timer); FBSTATE = 'off'; renderFbForm(); renderFbResults(); return; }
+  FBDB = db;
+  if (user){
+    try { FBEDIT = !!(await user.canEdit()); } catch (_) {}
+    try { if ((await user.can('data.write')) === false) FBCAN = false; } catch (_) {}
+  }
+  renderFbForm();
+  db.collection('feedback').onSnapshot(snap => {
+    FBROWS = snap.docs.map(d => Object.assign({}, d.data(), {id:d.id}));
+    if (!snap.metadata.fromCache){ clearTimeout(timer); FBSTATE = 'ok'; }
+    else if (FBSTATE === 'loading') FBSTATE = 'cache';
+    renderFbResults();
+  }, () => { clearTimeout(timer); FBSTATE = 'err'; renderFbResults(); });
+}
 
 reset();
+showView(fromHash());
+initFb();
 })();
 </script>
