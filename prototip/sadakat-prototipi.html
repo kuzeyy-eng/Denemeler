@@ -1,0 +1,762 @@
+<title>Kafe Sadakat Prototipi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: üstte görünüm sekmeleri ve demo şeridi; altında kasa tableti ve müşteri telefonu yan yana (dar ekranda alt alta), ayrı sekmede sahip paneli. */
+:root{
+  --bg:#F2F4F1; --surface:#FFFFFF; --surface-2:#E6EBE6; --ink:#1E1A17; --muted:#5C645E; --line:#D3DAD3;
+  --accent:#1F6B5C; --accent-ink:#FFFFFF; --accent-soft:#CFE6DF;
+  --card:#23201D; --card-ink:#F3F1EC;
+  --t-yeni:#6F8077; --t-mudavim:#B0622F; --t-altin:#BE951A;
+  --ok:#2E7D4F; --warn:#A86B12; --bad:#B23B3B; --on-bad:#FFFFFF;
+  --qr-bg:#FFFFFF; --qr-ink:#141414; --frame:#2A2622;
+  --f-display:'Bricolage Grotesque','Inter',system-ui,sans-serif;
+  --f-body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131615; --surface:#1B1F1D; --surface-2:#242A27; --ink:#ECEFEA; --muted:#9BA49D; --line:#313833;
+    --accent:#4FB39C; --accent-ink:#0D1A16; --accent-soft:#1E3A33;
+    --card:#2A302D; --card-ink:#F1F3EF;
+    --t-yeni:#93A59A; --t-mudavim:#D58753; --t-altin:#DDB53B;
+    --ok:#5CC08A; --warn:#E3AA4C; --bad:#E36D6D; --on-bad:#1A0D0D;
+    --qr-bg:#FFFFFF; --qr-ink:#141414; --frame:#0A0C0B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131615; --surface:#1B1F1D; --surface-2:#242A27; --ink:#ECEFEA; --muted:#9BA49D; --line:#313833;
+  --accent:#4FB39C; --accent-ink:#0D1A16; --accent-soft:#1E3A33;
+  --card:#2A302D; --card-ink:#F1F3EF;
+  --t-yeni:#93A59A; --t-mudavim:#D58753; --t-altin:#DDB53B;
+  --ok:#5CC08A; --warn:#E3AA4C; --bad:#E36D6D; --on-bad:#1A0D0D;
+  --qr-bg:#FFFFFF; --qr-ink:#141414; --frame:#0A0C0B;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:15px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+*{box-sizing:border-box}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font-family:inherit}
+.app{max-width:1180px;margin:0 auto}
+.muted{color:var(--muted)} .small{font-size:.8125rem} .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font:600 .7rem var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+
+/* Üst kısım */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-block:22px 14px}
+.brand h1{font:800 1.6rem/1.1 var(--f-display);margin:0;letter-spacing:-.015em}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:.875rem}
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:999px}
+.tabs button{border:0;background:transparent;color:var(--muted);font:600 .875rem var(--f-body);padding:8px 16px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgb(0 0 0 / .14)}
+.demobar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:10px 14px;border:1px dashed var(--line);border-radius:12px;margin-bottom:22px;font-size:.875rem}
+.demobar .date{font-family:var(--f-mono);font-weight:600;margin-right:4px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 .8125rem var(--f-body);padding:6px 11px;border-radius:8px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.chip.warn{color:var(--bad)}
+.spacer{flex:1}
+
+/* Cihazlar */
+.stage{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:center}
+.device{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.device figcaption{padding-left:6px}
+.device.tablet{flex:1 1 560px;max-width:720px}
+.device.phone{flex:0 1 380px;width:100%;max-width:380px}
+.bezel{background:var(--frame);padding:12px;border-radius:30px;box-shadow:0 24px 48px -28px rgb(0 0 0 / .55)}
+.phone .bezel{border-radius:44px;padding:10px}
+.screen{position:relative;background:var(--bg);border-radius:18px;height:700px;overflow:hidden;display:flex;flex-direction:column}
+.phone .screen{border-radius:34px}
+.tablet .screen{container-type:inline-size}
+
+/* Tablet */
+.tgrid{display:grid;grid-template-columns:1.35fr 1fr;height:100%;min-height:0}
+.tmain{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px 24px;text-align:center;border-right:1px solid var(--line);min-height:0;min-width:0}
+.tmain p{margin:0}
+.t-h{font:700 1.9rem/1.1 var(--f-display);margin:0;text-wrap:balance}
+.tside{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--surface)}
+.tside header{padding:18px 18px 10px;display:flex;flex-direction:column;gap:2px}
+.tstats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px 14px}
+.stat{background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font:700 1.45rem/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{font-size:.75rem;color:var(--muted)}
+.sub{font:600 .7rem var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0;padding:0 18px 4px}
+.log{list-style:none;margin:0;padding:0 18px 18px;overflow:auto;flex:1;min-height:0}
+.log li{display:grid;grid-template-columns:3.4rem 1fr;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.8125rem}
+.log time{font-family:var(--f-mono);color:var(--muted);font-size:.75rem;padding-top:1px}
+.lk{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--accent);vertical-align:1px}
+.k-reward .lk{background:var(--t-altin)} .k-warn .lk{background:var(--bad)} .k-join .lk{background:var(--t-mudavim)}
+.bigbtn{font:700 1.35rem var(--f-display);background:var(--accent);color:var(--accent-ink);border:0;border-radius:20px;padding:24px 44px;cursor:pointer;box-shadow:0 6px 0 0 color-mix(in oklab,var(--accent) 62%,black);transition:transform .08s,box-shadow .08s}
+.bigbtn:active{transform:translateY(4px);box-shadow:0 2px 0 0 color-mix(in oklab,var(--accent) 62%,black)}
+.qrbox{background:var(--qr-bg);padding:10px;border-radius:16px;border:1px solid var(--line)}
+.qrbox canvas{display:block;width:min(230px,58vw);max-width:100%;height:auto;aspect-ratio:1}
+.code{font:600 1.1rem var(--f-mono);letter-spacing:.14em}
+.cdbar{width:230px;max-width:100%;height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.cdbar i{display:block;height:100%;width:100%;background:var(--accent);transition:width .25s linear}
+.cdbar i.low{background:var(--bad)}
+.hint{font-size:.8125rem;color:var(--muted);margin:0;text-align:center}
+.hint.ok{color:var(--ok)}
+.flash{display:flex;flex-direction:column;align-items:center;gap:10px}
+.flash .who{font:700 1.6rem/1.15 var(--f-display);margin:0}
+.flash .big{font:600 2rem var(--f-mono);font-variant-numeric:tabular-nums}
+@container (max-width:540px){
+  .tgrid{grid-template-columns:1fr;grid-template-rows:auto minmax(300px,1fr);overflow:auto}
+  .tmain{border-right:0;border-bottom:1px solid var(--line)}
+}
+
+/* Ortak işaretler */
+.mark{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);animation:pop .35s ease-out}
+.mark svg{width:44px;height:44px}
+.mark.bad{background:var(--bad);color:var(--on-bad)}
+.mark.tier{background:var(--tc);color:var(--card)}
+@keyframes pop{from{transform:scale(.7);opacity:.5}to{transform:scale(1);opacity:1}}
+.pill{--tc:var(--accent);display:inline-block;color:var(--tc);background:color-mix(in oklab,var(--tc) 15%,transparent);font:600 .75rem var(--f-body);padding:2px 9px;border-radius:99px;white-space:nowrap}
+
+/* Telefon */
+#pcontent{flex:1;min-height:0;display:flex;flex-direction:column}
+.pscroll{flex:1;min-height:0;overflow:auto}
+.pbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:22px 20px 10px;background:var(--bg)}
+.pbar .cafe{font:700 1.05rem var(--f-display)}
+.iconbtn{border:0;background:var(--surface-2);color:var(--ink);width:36px;height:36px;border-radius:50%;cursor:pointer;display:grid;place-items:center}
+.iconbtn svg{width:18px;height:18px}
+.pbody{padding:6px 20px 28px;display:flex;flex-direction:column;gap:18px}
+.pbody h2{font:700 1.55rem/1.15 var(--f-display);margin:0;text-wrap:balance}
+.pbody p{margin:0}
+.block{display:flex;flex-direction:column;gap:10px}
+.block h3{margin:0;font:700 1rem var(--f-display)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 1rem var(--f-body);padding:14px 18px;border-radius:14px;border:1px solid transparent;cursor:pointer}
+.btn svg{width:20px;height:20px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);width:100%}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);width:100%}
+.btn.sm{padding:8px 14px;font-size:.875rem;background:var(--accent);color:var(--accent-ink);border-radius:10px;flex:none}
+.link{background:none;border:0;color:var(--accent);font:600 .875rem var(--f-body);cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px;align-self:center}
+.discs{display:flex;justify-content:center;padding:18px 0 6px}
+.disc{width:84px;height:84px;border-radius:50%;border:12px solid var(--tc);margin-left:-22px;background:var(--bg);display:grid;place-items:center;font:700 .7rem var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--tc)}
+.disc:first-child{margin-left:0}
+.tiercard{--tc:var(--t-yeni);background:var(--card);color:var(--card-ink);border-radius:24px;padding:20px 20px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+.tiercard .ring{position:absolute;right:-46px;top:-46px;width:170px;height:170px;border-radius:50%;border:20px solid var(--tc);opacity:.95}
+.tiercard .eyebrow{color:color-mix(in oklab,var(--card-ink) 62%,transparent)}
+.tiercard .lvl{font:800 2.4rem/1 var(--f-display);color:var(--tc);margin:2px 0 4px;letter-spacing:-.02em}
+.tiercard .cnt b,.tiercard .next b{font-variant-numeric:tabular-nums}
+.progress{height:8px;border-radius:99px;background:color-mix(in oklab,var(--card-ink) 16%,transparent);overflow:hidden;margin-top:6px}
+.progress i{display:block;height:100%;background:var(--tc);border-radius:99px}
+.tiercard .next{font-size:.875rem;color:color-mix(in oklab,var(--card-ink) 80%,transparent)}
+.alert{background:color-mix(in oklab,var(--warn) 13%,var(--surface));border:1px solid color-mix(in oklab,var(--warn) 45%,transparent);border-radius:12px;padding:10px 12px;font-size:.8125rem}
+.stamps{display:flex;gap:4px;flex-wrap:wrap}
+.stamp{width:26px;height:26px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;color:var(--muted)}
+.stamp.on{background:var(--accent);border:2px solid var(--accent);color:var(--accent-ink)}
+.stamp svg{width:14px;height:14px}
+.rw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.rw div{display:flex;flex-direction:column;min-width:0}
+.empty{font-size:.875rem;color:var(--muted);padding:12px 14px;border:1px dashed var(--line);border-radius:14px}
+.tlist{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.tlist li{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.tlist li.cur{border-color:var(--tc);box-shadow:inset 0 0 0 1px var(--tc)}
+.tlist .dot{width:14px;height:14px;border-radius:50%;background:var(--tc);flex:none;margin-top:4px}
+.tlist li>div{display:flex;flex-direction:column;flex:1;min-width:0}
+.vlist{list-style:none;margin:0;padding:0;font-size:.875rem}
+.vlist li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)}
+.form{gap:12px}
+.form label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.875rem}
+.form .opt{font-weight:400;color:var(--muted)}
+input,select{font:inherit;font-weight:400;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:0;width:100%}
+.form label.check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;font-size:.8125rem}
+.check input{width:20px;height:20px;margin-top:1px;flex:none;accent-color:var(--accent);padding:0}
+.err{color:var(--bad);font-size:.8125rem;margin-top:-6px}
+.err:empty{display:none}
+details.kvkk{font-size:.8125rem;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+details.kvkk summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details.kvkk p{margin:8px 0 2px}
+
+/* Telefon katmanları */
+.ov{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;gap:14px;padding:32px 24px;overflow:auto}
+.ov.result{background:var(--bg);align-items:center;justify-content:center;text-align:center}
+.ov.result h2{font:700 1.6rem/1.15 var(--f-display);margin:6px 0 0;text-wrap:balance}
+.ov.result p{margin:0;max-width:30ch}
+.ov.result .btn{margin-top:12px}
+.ov.cam{background:var(--frame);color:var(--card-ink);align-items:center;justify-content:center}
+.vf{position:relative;width:220px;height:220px;border-radius:26px;border:3px solid color-mix(in oklab,var(--card-ink) 55%,transparent);overflow:hidden}
+.scanline{position:absolute;left:8%;right:8%;height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);top:10%;animation:scan .9s ease-in-out infinite alternate}
+@keyframes scan{from{top:10%}to{top:88%}}
+.ov.sheetwrap{background:rgb(0 0 0 / .45);justify-content:flex-end;padding:0}
+.sheet{background:var(--surface);border-radius:26px 26px 0 0;padding:22px 22px 28px;display:flex;flex-direction:column;gap:12px}
+.sheet h2{font:700 1.4rem var(--f-display);margin:0}
+.sheet p{margin:0}
+.slide{position:relative;height:60px;border-radius:99px;background:var(--surface-2);overflow:hidden;display:grid;place-items:center;user-select:none;-webkit-user-select:none;touch-action:none;margin-top:6px}
+.slide>span{font-weight:600;color:var(--muted);pointer-events:none;position:relative}
+.slide-fill{position:absolute;left:0;top:0;bottom:0;width:60px;background:var(--accent-soft);border-radius:99px}
+.slide-knob{position:absolute;left:4px;top:4px;width:52px;height:52px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;cursor:grab;touch-action:none}
+.slide-knob svg{width:22px;height:22px}
+.ov.confirm{background:var(--card);color:var(--card-ink);padding:0}
+.stripes{position:absolute;inset:0;background:repeating-linear-gradient(135deg,color-mix(in oklab,var(--tc) 34%,transparent) 0 18px,transparent 18px 36px);background-size:51px 51px;animation:drift 1.6s linear infinite;opacity:.55}
+@keyframes drift{from{background-position:0 0}to{background-position:51px 0}}
+.cbody{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:32px 24px;background:radial-gradient(circle at 50% 45%,var(--card) 0 52%,transparent 80%)}
+.cbody h2{font:800 1.8rem/1.1 var(--f-display);margin:0;color:var(--tc)}
+.cbody p{margin:0}
+.cbody .clock{font:600 2.6rem var(--f-mono);letter-spacing:.02em}
+.cbody .eyebrow{color:color-mix(in oklab,var(--card-ink) 65%,transparent)}
+.cbody .btn{background:var(--card-ink);color:var(--card);margin-top:8px;min-width:160px}
+.cbody .small{max-width:30ch;color:color-mix(in oklab,var(--card-ink) 75%,transparent)}
+.ptoast{position:absolute;left:16px;right:16px;bottom:18px;z-index:9;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;font-size:.875rem;text-align:center}
+
+/* Nasıl denenir */
+.howto{max-width:760px;margin:34px auto 0}
+.howto h2{font:700 1.15rem var(--f-display);margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.3rem;color:var(--muted);display:grid;gap:6px}
+.howto b{color:var(--ink)}
+
+/* Sahip paneli */
+.phead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+.phead h2{font:700 1.8rem/1.1 var(--f-display);margin:0}
+.phead p{margin:4px 0 0}
+.tag{font:600 .7rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;border:1px dashed var(--warn);color:var(--warn);padding:4px 10px;border-radius:99px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi b{font:700 2.1rem/1.1 var(--f-display);display:block;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:.8125rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card h3{margin:0 0 12px;font:700 1.08rem var(--f-display)}
+.card p{margin:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;margin-block:16px}
+.distbar{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.distbar i{background:var(--tc);display:block;min-width:4px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;list-style:none;padding:0;margin:12px 0 8px;font-size:.875rem}
+.legend li{display:flex;align-items:center;gap:7px}
+.legend i{width:10px;height:10px;border-radius:3px;background:var(--tc)}
+.legend b{font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.875rem}
+th{text-align:left;font:600 .68rem var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.note{font-size:.8125rem;color:var(--muted);margin-top:12px!important}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin-bottom:14px}
+.sgrid label,.settings td label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.875rem}
+.settings td input{width:96px}
+.settings .err{margin:10px 0 0}
+.settings .actions{margin-top:14px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="app" lang="tr">
+  <header class="top">
+    <div class="brand">
+      <h1>Kafe Sadakat Prototipi</h1>
+      <p>Seviyeli üyelik · müşteri kendi okutur · web uygulaması · tek şube</p>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Görünüm">
+      <button role="tab" id="tab-akis" aria-selected="true" data-act="view" data-v="akis">Kasa ve müşteri</button>
+      <button role="tab" id="tab-panel" aria-selected="false" data-act="view" data-v="panel">Sahip paneli</button>
+    </nav>
+  </header>
+
+  <section class="demobar" aria-label="Demo kontrolleri">
+    <span class="eyebrow">Demo günü</span>
+    <span class="date" id="simdate"></span>
+    <button class="chip" data-act="day" data-n="1">+1 gün</button>
+    <button class="chip" data-act="day" data-n="7">+7 gün</button>
+    <button class="chip" data-act="day" data-n="30">+30 gün</button>
+    <span class="spacer"></span>
+    <button class="chip warn" data-act="cheat">Hile dene: kullanılmış kodu okut</button>
+    <button class="chip" data-act="reset">Baştan başla</button>
+  </section>
+
+  <main>
+    <section id="view-akis">
+      <div class="stage">
+        <figure class="device tablet">
+          <figcaption class="eyebrow">Kasa tableti</figcaption>
+          <div class="bezel"><div class="screen" id="tablet"></div></div>
+        </figure>
+        <figure class="device phone">
+          <figcaption class="eyebrow">Müşterinin telefonu</figcaption>
+          <div class="bezel"><div class="screen" id="phone"><div id="pcontent"></div><div class="ptoast" id="ptoast" role="status" hidden></div></div></div>
+        </figure>
+      </div>
+      <div class="howto">
+        <h2>Demoyu nasıl denersin</h2>
+        <ol>
+          <li>Kasa tabletinde <b>Ziyaret ver</b>e bas. 60 saniyelik tek kullanımlık bir kod açılır.</li>
+          <li>Telefonda <b>QR'ı okut</b>a bas. Gerçekte telefonun kamerası açılır, burada okutma taklit ediliyor.</li>
+          <li>İlk seferde kısa bir kayıt formu çıkar. Kayıttan sonra o ziyaret sayılır ve hoş geldin kahvesi verilir.</li>
+          <li>Üstteki <b>+1 gün</b> ile ertesi güne geçip tekrar dene. Damgalar dolar, seviye yükselir. Aynı gün ikinci ziyaret reddedilir.</li>
+          <li>Bir ödülü <b>kaydırarak</b> kullan. Telefonda canlı saatli bir onay ekranı çıkar, aynı işlem tablette de görünür.</li>
+          <li><b>+30 gün</b> ile uzun süre gelmeyen müşterinin seviyesinin nasıl düştüğünü gör. Rakamları <b>Sahip paneli</b>nden değiştir.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="view-panel" hidden>
+      <div id="panel-data"></div>
+      <div id="panel-settings"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $ = (s, r=document) => r.querySelector(s);
+const DAY = 86400000;
+const n0 = new Date();
+const baseDay = Math.round(Date.UTC(n0.getFullYear(), n0.getMonth(), n0.getDate()) / DAY);
+let offset = 0;
+const today = () => baseDay + offset;
+const dDate = d => new Date(d * DAY);
+const fmtDay = (d, o) => dDate(d).toLocaleDateString('tr-TR', Object.assign({timeZone:'UTC'}, o || {day:'numeric', month:'long'}));
+const fmtTime = (sec, date) => (date || new Date()).toLocaleTimeString('tr-TR', sec ? {hour:'2-digit', minute:'2-digit', second:'2-digit'} : {hour:'2-digit', minute:'2-digit'});
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rel = d => { const x = today() - d; return x <= 0 ? 'bugün' : x === 1 ? 'dün' : x + ' gün önce'; };
+let UID = 0; const uid = p => p + (++UID);
+function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function hash(s){ let h = 2166136261; for (const ch of s){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+const IC = {
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>',
+  cup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 8h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z"/><path d="M16 9.5h1.5a2.5 2.5 0 0 1 0 5H16"/></svg>',
+  qr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
+  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+};
+
+const DEFAULTS = () => ({ cafe:'Örnek Kafe', windowDays:90, tiers:[
+  {id:'yeni', name:'Yeni', min:0, every:10, extras:['Kayıtta hoş geldin kahvesi']},
+  {id:'mudavim', name:'Müdavim', min:5, every:8, extras:[]},
+  {id:'altin', name:'Altın', min:15, every:6, extras:['Doğum gününde ikram', 'Yeni ürünleri ilk deneme']}
+]});
+
+let S;
+const tiersSorted = () => [...S.settings.tiers].sort((a,b) => a.min - b.min);
+const recentCount = (c, at) => { at = at == null ? today() : at; const w = S.settings.windowDays; return c.visits.filter(d => d <= at && d > at - w).length; };
+function tierOf(c, at){ const n = recentCount(c, at); let t = tiersSorted()[0]; for (const x of tiersSorted()) if (n >= x.min) t = x; return t; }
+const tierIdx = t => tiersSorted().indexOf(t);
+const nextTier = t => tiersSorted()[tierIdx(t) + 1] || null;
+const perks = t => ['Her ' + t.every + '. kahve bedava'].concat(t.extras);
+const getMe = () => S.customers.find(c => c.id === S.me) || null;
+
+function log(kind, text){ S.log.unshift({day:today(), time:fmtTime(false), text, kind}); if (S.log.length > 80) S.log.length = 80; }
+function addReward(c, kind, label){ const r = {id:uid('r'), kind, label, earned:today(), used:null}; c.rewards.push(r); return r; }
+function checkBirthday(c){
+  if (!c.bday || tierOf(c).id !== 'altin') return;
+  if (dDate(today()).toISOString().slice(5,10) !== c.bday) return;
+  if (c.rewards.some(r => r.kind === 'dogum' && today() - r.earned < 300)) return;
+  addReward(c, 'dogum', 'Doğum günü ikramı');
+  log('reward', c.name + ' doğum günü ikramı kazandı');
+}
+function addVisit(c){
+  const before = tierOf(c);
+  c.visits.push(today()); c.visits.sort((a,b) => a - b);
+  const after = tierOf(c);
+  c.stamps++;
+  let earned = null;
+  if (c.stamps >= after.every){ c.stamps = 0; earned = addReward(c, 'kahve', 'Bedava kahve'); }
+  checkBirthday(c);
+  log('visit', c.name + ' ziyaret kazandı · ' + after.name);
+  return {before, after, earned, up: tierIdx(after) > tierIdx(before)};
+}
+
+/* Örnek müşteriler */
+function makeSamples(){
+  const r = rng(20261116);
+  const first = ['Ayşe','Mehmet','Zeynep','Can','Elif','Burak','Selin','Emre','Deniz','Merve','Kerem','İrem','Oğuz','Defne','Yusuf','Ece','Barış','Nil','Arda','Ceren','Kaan','Buse','Tolga','Derya','Umut','Gizem','Onur','Pelin','Serkan','Melis','Hakan','Sude','Efe','Damla','Cem','Aslı','Mert','İpek'];
+  const letters = 'ABÇDEGHKLMNÖPRSŞTUYZ';
+  return first.map((name, i) => {
+    const kind = i < 6 ? 'altin' : i < 16 ? 'mudavim' : i < 28 ? 'yeni' : 'kayip';
+    const gap = {altin:[2,5], mudavim:[5,12], yeni:[10,30], kayip:[6,14]}[kind];
+    const count = kind === 'yeni' ? 1 + Math.floor(r()*4) : kind === 'kayip' ? 4 + Math.floor(r()*8) : 10 + Math.floor(r()*28);
+    let d = today() - (kind === 'kayip' ? 31 + Math.floor(r()*45) : 0);
+    const visits = [];
+    for (let k = 0; k < count; k++){ d -= gap[0] + Math.floor(r()*(gap[1]-gap[0]+1)); visits.unshift(d); }
+    const c = {id:'s'+i, sample:true, name: name + ' ' + letters[Math.floor(r()*letters.length)] + '.',
+      phone:'05' + (3 + Math.floor(r()*3)) + Math.floor(r()*10) + ' *** ** ' + String(Math.floor(r()*100)).padStart(2,'0'),
+      visits, stamps:0, rewards:[], marketing: r() < .6, bday:null, joined: visits[0]};
+    c.rewards.push({id:uid('r'), kind:'hosgeldin', label:'Hoş geldin kahvesi', earned:visits[0], used: visits[1] != null ? visits[1] : null});
+    let st = 0;
+    visits.forEach((v, k) => { st++; if (st >= 8){ st = 0; const ui = k + 1 + Math.floor(r()*3); c.rewards.push({id:uid('r'), kind:'kahve', label:'Bedava kahve', earned:v, used: ui < visits.length ? visits[ui] : null}); } });
+    c.stamps = st;
+    return c;
+  });
+}
+function seedLog(){
+  const picks = [[0,190],[3,118],[7,64],[1,21]];
+  picks.forEach(([i, mins]) => {
+    const c = S.customers[i];
+    if (!c.visits.includes(today())){ c.visits.push(today()); c.stamps++; }
+    S.log.unshift({day:today(), time:fmtTime(false, new Date(Date.now() - mins*60000)), text: c.name + ' ziyaret kazandı · ' + tierOf(c).name, kind:'visit'});
+  });
+}
+
+function reset(){
+  offset = 0; UID = 0;
+  S = {settings:DEFAULTS(), customers:[], me:null, token:null, lastUsed:null, pending:null, log:[], phone:{screen:'welcome', overlay:null}, flash:null};
+  S.customers = makeSamples();
+  seedLog();
+  renderSettings(); renderAll();
+}
+
+/* Sahte QR çizimi (gerçek bir QR kodu değildir) */
+function drawQR(cv, code){
+  if (!cv) return;
+  const n = 25, r = rng(hash(code)), ctx = cv.getContext('2d'), size = cv.width, m = size / (n + 2);
+  const cs = getComputedStyle(document.documentElement);
+  ctx.fillStyle = cs.getPropertyValue('--qr-bg').trim() || '#fff'; ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = cs.getPropertyValue('--qr-ink').trim() || '#111';
+  const inFinder = (x, y) => (x < 8 && y < 8) || (x > n-9 && y < 8) || (x < 8 && y > n-9);
+  const finder = (ox, oy) => { for (let y=0;y<7;y++) for (let x=0;x<7;x++){ const edge = x===0||y===0||x===6||y===6, core = x>=2&&x<=4&&y>=2&&y<=4; if (edge||core) ctx.fillRect((ox+x+1)*m, (oy+y+1)*m, m+.6, m+.6); } };
+  for (let y=0;y<n;y++) for (let x=0;x<n;x++){ if (inFinder(x,y)) continue; if (r() < .48) ctx.fillRect((x+1)*m, (y+1)*m, m+.6, m+.6); }
+  finder(0,0); finder(n-7,0); finder(0,n-7);
+}
+
+/* Tablet */
+function renderTablet(){
+  const el = $('#tablet'), t = S.token, f = S.flash, cafe = esc(S.settings.cafe);
+  let main;
+  if (f && f.kind === 'reward'){
+    main = `<div class="flash" style="--tc:var(--t-${f.tier})"><div class="mark tier">${IC.cup}</div><p class="eyebrow">Ödül kullanıldı</p><p class="who">${esc(f.name)}</p><p><b>${esc(f.label)}</b></p><p class="big">${f.time}</p><p class="hint">Müşterinin ekranındaki kullanım saatiyle aynı olmalı.</p><button class="chip" data-act="issue">Yeni ziyaret kodu aç</button></div>`;
+  } else if (f){
+    main = `<div class="flash"><div class="mark">${IC.check}</div><p class="eyebrow">${f.join ? 'Yeni üye' : 'Ziyaret sayıldı'}</p><p class="who">${esc(f.name)}</p><p><span class="pill" style="--tc:var(--t-${f.tier})">${esc(f.tierName)}</span></p><p class="muted">${esc(f.text)}</p><button class="chip" data-act="issue">Yeni ziyaret kodu aç</button></div>`;
+  } else if (t){
+    main = `<p class="eyebrow">Ziyaret kodu · tek kullanımlık</p><div class="qrbox"><canvas id="qr" width="560" height="560" role="img" aria-label="Ziyaret QR kodu, demo amaçlı"></canvas></div><div class="code">${t.code}</div><div class="cdbar"><i id="cdbar"></i></div><p class="hint"><span id="cd" class="mono">1:00</span> içinde okutulmalı</p><button class="chip" data-act="close-token">Kodu kapat</button>`;
+  } else {
+    main = `<p class="eyebrow">${cafe} · Kasa</p><h2 class="t-h">Ödeme alındı mı?</h2><p class="muted">Müşteriye ziyaret kodu açmak için dokun.</p><button class="bigbtn" data-act="issue">Ziyaret ver</button><p class="hint">Kod 60 saniye geçerli ve tek kullanımlık. Bir müşteri günde bir ziyaret kazanır.</p>`;
+  }
+  const d = today();
+  const visitsToday = S.customers.filter(c => c.visits.includes(d)).length;
+  const rewardsToday = S.customers.reduce((a, c) => a + c.rewards.filter(r => r.used === d).length, 0);
+  const items = S.log.slice(0, 40).map(e => `<li class="k-${e.kind}"><time>${e.day === d ? e.time : fmtDay(e.day, {day:'numeric', month:'short'})}</time><span><i class="lk"></i>${esc(e.text)}</span></li>`).join('') || '<li><time></time><span class="muted">Henüz hareket yok.</span></li>';
+  el.innerHTML = `<div class="tgrid"><div class="tmain">${main}</div><aside class="tside"><header><div class="row"><b>Bugün</b><span class="mono" data-clock="hm"></span></div><span class="muted small">${fmtDay(d, {weekday:'long', day:'numeric', month:'long'})}</span></header><div class="tstats"><div class="stat"><b>${visitsToday}</b><span>ziyaret</span></div><div class="stat"><b>${rewardsToday}</b><span>kullanılan ödül</span></div></div><h3 class="sub">Son hareketler</h3><ul class="log">${items}</ul></aside></div>`;
+  if (t && !f) drawQR($('#qr'), t.code);
+  tick();
+}
+function issueToken(){
+  const part = k => Array.from({length:k}, () => 'ACDEFGHJKLMNPRTUVWXY34679'[Math.floor(Math.random()*25)]).join('');
+  S.token = {code: part(4) + '-' + part(3), exp: Date.now() + 60000};
+  S.flash = null;
+  renderTablet(); renderPhone();
+}
+
+/* Telefon */
+function tierList(cur){
+  const w = S.settings.windowDays;
+  return `<ul class="tlist">${tiersSorted().map(t => `<li class="${cur === t.id ? 'cur' : ''}" style="--tc:var(--t-${t.id})"><span class="dot"></span><div><b>${t.name}</b><span class="small muted">${t.min === 0 ? 'Kayıt olunca' : w + ' günde ' + t.min + '+ ziyaret'}</span><span class="small">${perks(t).map(esc).join(' · ')}</span></div>${cur === t.id ? '<span class="pill" style="--tc:var(--t-' + t.id + ')">Sen</span>' : ''}</li>`).join('')}</ul>`;
+}
+function tokenHint(){
+  return S.token ? '<p class="hint ok">Kasada açık bir kod var, okutabilirsin.</p>' : '<p class="hint">Kasada açık kod yok. Önce tabletten "Ziyaret ver"e bas.</p>';
+}
+function screenWelcome(){
+  const ts = tiersSorted();
+  return `<div class="pbar"><span class="cafe">${esc(S.settings.cafe)}</span></div>
+  <div class="pbody">
+    <div class="discs" aria-hidden="true">${ts.map(t => `<span class="disc" style="--tc:var(--t-${t.id})">${t.name}</span>`).join('')}</div>
+    <h2>Her ziyaretin sayılsın, seviyen yükselsin.</h2>
+    <p class="muted">Ödemeden sonra kasadaki tabletin kodunu okut. İlk seferde kısa bir kayıt yeter, hoş geldin kahven hemen hesabına geçer.</p>
+    <button class="btn primary" data-act="scan">${IC.qr}QR'ı okut</button>
+    ${tokenHint()}
+    <button class="link" data-act="demo-login">Demo: kayıtlı bir müdavim olarak devam et</button>
+    <div class="block"><h3>Seviyeler</h3>${tierList(null)}</div>
+  </div>`;
+}
+function screenSignup(){
+  return `<div class="pbar"><button class="iconbtn" data-act="back" aria-label="Geri">${IC.back}</button><span class="cafe">Kayıt</span><span style="width:36px"></span></div>
+  <form class="pbody form" id="signup" novalidate>
+    <p class="muted">Kodun ayrıldı. Kaydını tamamlayınca bu ziyaretin de sayılacak.</p>
+    <label for="f-name">Adın<input id="f-name" autocomplete="given-name" placeholder="Örn. Elif"></label>
+    <small class="err" id="e-name"></small>
+    <label for="f-phone">Telefon numaran<input id="f-phone" inputmode="tel" autocomplete="tel" placeholder="05xx xxx xx xx"></label>
+    <small class="err" id="e-phone"></small>
+    <label for="f-bday">Doğum günün <span class="opt">(isteğe bağlı, Altın üyelere ikram için)</span><input id="f-bday" type="date"></label>
+    <label class="check" for="f-kvkk"><input type="checkbox" id="f-kvkk"><span>Aydınlatma metnini okudum. Adımın ve telefonumun sadakat programı için işlenmesini kabul ediyorum.</span></label>
+    <small class="err" id="e-kvkk"></small>
+    <details class="kvkk"><summary>Aydınlatma metni (taslak)</summary><p>Taslak metin: ${esc(S.settings.cafe)}, adını ve telefon numaranı yalnızca ziyaretlerini saymak ve ödüllerini tanımlamak için işler. Verilerin üçüncü kişilerle paylaşılmaz. Dilediğin zaman silinmesini isteyebilirsin. Yayına almadan önce bir hukukçuya kontrol ettirilmeli.</p></details>
+    <label class="check" for="f-mkt"><input type="checkbox" id="f-mkt"><span>Kampanyalardan SMS ile haberdar olmak istiyorum. (İsteğe bağlı, ayrı bir izin)</span></label>
+    <button class="btn primary" type="submit">Kaydı tamamla</button>
+  </form>`;
+}
+function screenCard(me){
+  const t = tierOf(me), n = recentCount(me), nt = nextTier(t), w = S.settings.windowDays, d = today();
+  const prog = nt ? Math.max(0, Math.min(1, (n - t.min) / (nt.min - t.min))) : 1;
+  const exp7 = me.visits.filter(v => v > d - w && v <= d - w + 7).length;
+  const risk = t.min > 0 && (n - exp7) < t.min;
+  const st = Math.min(me.stamps, t.every);
+  const dots = Array.from({length:t.every}, (_, i) => `<span class="stamp ${i < st ? 'on' : ''}">${i === t.every - 1 ? IC.cup : ''}</span>`).join('');
+  const avail = me.rewards.filter(r => r.used == null), used = me.rewards.length - avail.length;
+  const rewards = avail.length ? avail.map(r => `<div class="rw"><div><b>${esc(r.label)}</b><span class="small muted">${fmtDay(r.earned)} tarihinde kazandın</span></div><button class="btn sm" data-act="redeem" data-id="${r.id}">Kullan</button></div>`).join('')
+    : `<p class="empty">Şu an kullanılabilir ödülün yok. ${t.every - st} ziyaret sonra bedava kahve senin.</p>`;
+  const recent = [...me.visits].reverse().slice(0, 5).map(v => `<li><span>${fmtDay(v, {day:'numeric', month:'long', weekday:'short'})}</span><span class="muted">${rel(v)}</span></li>`).join('') || '<li><span class="muted">Henüz ziyaret yok.</span></li>';
+  return `<div class="pbar"><div><span class="cafe">${esc(S.settings.cafe)}</span><div class="small muted">Merhaba, ${esc(me.name.split(' ')[0])}</div></div><button class="iconbtn" data-act="logout" aria-label="Çıkış yap (demo)">${IC.out}</button></div>
+  <div class="pbody">
+    <section class="tiercard" style="--tc:var(--t-${t.id})">
+      <div class="ring" aria-hidden="true"></div>
+      <p class="eyebrow">Seviyen</p>
+      <p class="lvl">${t.name}</p>
+      <p class="cnt">Son ${w} günde <b>${n}</b> ziyaret</p>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(prog*100)}"><i style="width:${prog*100}%"></i></div>
+      <p class="next">${nt ? nt.name + ' için <b>' + (nt.min - n) + '</b> ziyaret kaldı' : 'En üst seviyedesin. ' + w + ' günde ' + t.min + ' ziyaretle seviyeni korursun.'}</p>
+    </section>
+    ${risk ? `<p class="alert">7 gün içinde gelmezsen <b>${t.name}</b> seviyeni kaybedebilirsin. ${exp7} ziyaretin ${w} günlük süreyi dolduruyor.</p>` : ''}
+    <button class="btn primary" data-act="scan">${IC.qr}QR'ı okut</button>
+    ${tokenHint()}
+    <section class="block"><div class="row"><h3>Bedava kahveye</h3><span class="mono">${st}/${t.every}</span></div><div class="stamps">${dots}</div><p class="small muted">${t.name} seviyesinde her ${t.every}. kahve bedava.</p></section>
+    <section class="block"><div class="row"><h3>Ödüllerim</h3><span class="small muted">${used} kullanıldı</span></div>${rewards}</section>
+    <section class="block"><h3>Seviyeler</h3>${tierList(t.id)}</section>
+    <section class="block"><h3>Son ziyaretler</h3><ul class="vlist">${recent}</ul></section>
+  </div>`;
+}
+function overlayHtml(){
+  const o = S.phone.overlay, me = getMe();
+  if (!o) return '';
+  if (o.type === 'camera') return `<div class="ov cam"><div class="vf"><span class="scanline"></span></div><p>Kod aranıyor…</p><p class="small" style="opacity:.7">Demo: gerçekte telefonun kamerası açılır</p></div>`;
+  if (o.type === 'result') return `<div class="ov result" ${o.tier ? 'style="--tc:var(--t-' + o.tier + ')"' : ''}><div class="mark ${o.ok ? (o.up ? 'tier' : '') : 'bad'}">${o.ok ? IC.check : IC.x}</div><h2>${esc(o.title)}</h2>${o.lines.map(l => `<p class="muted">${esc(l)}</p>`).join('')}<button class="btn primary" data-act="close-ov">Tamam</button></div>`;
+  const rw = me && me.rewards.find(r => r.id === o.rid);
+  if (!rw) return '';
+  if (o.type === 'redeem') return `<div class="ov sheetwrap" data-act="close-bg"><div class="sheet" role="dialog" aria-modal="true" aria-label="Ödülü kullan"><p class="eyebrow">Ödülü kullan</p><h2>${esc(rw.label)}</h2><p class="muted">Bunu kasada, kasiyerin yanında yap. Kullanınca geri alınamaz.</p><div class="slide" id="slide"><i class="slide-fill" id="sfill"></i><span>Kaydırarak kullan</span><button class="slide-knob" id="knob" aria-label="Ödülü kullanmak için sağa kaydır ya da Enter'a bas">${IC.arrow}</button></div><button class="btn ghost" data-act="close-ov">Vazgeç</button></div></div>`;
+  if (o.type === 'confirm'){ const t = tierOf(me); return `<div class="ov confirm" style="--tc:var(--t-${t.id})"><div class="stripes" aria-hidden="true"></div><div class="cbody"><p class="eyebrow">Ödül kullanıldı · ${fmtDay(today(), {day:'numeric', month:'long', year:'numeric'})}</p><div class="mark tier">${IC.check}</div><h2>${esc(rw.label)}</h2><p class="clock" data-clock="hms"></p><p>${esc(me.name)} · kullanım ${rw.usedAt}</p><p class="small">Saat canlı akıyor ve arka plan hareket ediyor. Ekran görüntüsü böyle görünmez. Aynı işlem kasa tabletinde de görünür.</p><button class="btn" data-act="close-ov">Kapat</button></div></div>`; }
+  return '';
+}
+function renderPhone(){
+  const me = getMe();
+  if (me) S.phone.screen = 'card';
+  else if (S.phone.screen === 'card') S.phone.screen = 'welcome';
+  const keep = $('#phone .pscroll'), top = keep ? keep.scrollTop : 0, same = keep && keep.dataset.s === S.phone.screen;
+  const body = S.phone.screen === 'card' ? screenCard(me) : S.phone.screen === 'signup' ? screenSignup() : screenWelcome();
+  if (S.phone.screen === 'signup' && $('#signup')){ $('#phone .ovslot').innerHTML = overlayHtml(); }
+  else { $('#pcontent').innerHTML = `<div class="pscroll" data-s="${S.phone.screen}">${body}</div><div class="ovslot">${overlayHtml()}</div>`; }
+  if (same) $('#phone .pscroll').scrollTop = top;
+  bindSlider();
+  tick();
+}
+let toastT;
+function ptoast(msg){ const t = $('#ptoast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2600); }
+function showResult(ok, title, lines, extra){ S.phone.overlay = Object.assign({type:'result', ok, title, lines}, extra || {}); renderPhone(); }
+
+function startScan(old){
+  const me = getMe();
+  if (old && !me){ ptoast('Önce kayıt ol ya da demo müdavimle devam et.'); return; }
+  S.phone.overlay = {type:'camera'}; renderPhone();
+  const ms = matchMedia('(prefers-reduced-motion: reduce)').matches ? 250 : 950;
+  setTimeout(() => doScan(old), ms);
+}
+function doScan(old){
+  const me = getMe();
+  if (old){
+    if (!S.lastUsed){ showResult(false, 'Kod tanınmadı', ['Daha önce okutulmuş bir kod yok. Önce normal bir ziyaret okut.']); return; }
+    log('warn', 'Kullanılmış kod tekrar denendi (' + S.lastUsed + ')');
+    renderTablet();
+    showResult(false, 'Bu kod daha önce kullanıldı', ['Her kod tek bir ziyaret için geçerli. Fotoğrafı çekilen ya da paylaşılan kod işe yaramaz.']);
+    return;
+  }
+  const t = S.token;
+  if (!t){ showResult(false, 'Geçerli kod bulunamadı', ['Kasada açık bir ziyaret kodu yok.', 'Kasiyerden "Ziyaret ver"e basmasını iste.']); return; }
+  if (Date.now() > t.exp){ S.token = null; renderTablet(); showResult(false, 'Kodun süresi dolmuş', ['Kasiyerden yeni bir kod açmasını iste.']); return; }
+  S.lastUsed = t.code; S.token = null;
+  if (!me){ S.pending = t.code; S.phone.overlay = null; S.phone.screen = 'signup'; renderTablet(); renderPhone(); return; }
+  if (me.visits.includes(today())){
+    log('warn', me.name + ': aynı gün ikinci ziyaret reddedildi');
+    renderTablet();
+    showResult(false, 'Bugünkü ziyaretin zaten sayıldı', ['Günde bir ziyaret sayılıyor.', 'Demo: üstteki "+1 gün" ile ertesi güne geç.']);
+    return;
+  }
+  const res = addVisit(me);
+  visitDone(me, res, false);
+}
+function visitDone(me, res, join){
+  const t = res.after, w = S.settings.windowDays, n = recentCount(me);
+  const lines = [];
+  if (join) lines.push('Kaydın tamam ve bu ziyaretin sayıldı. Hoş geldin kahven Ödüllerim\'de.');
+  lines.push(t.name + ' · son ' + w + ' günde ' + n + ' ziyaret');
+  lines.push(res.earned ? 'Bedava kahve kazandın. Ödüllerim\'de seni bekliyor.' : 'Bedava kahveye ' + (t.every - me.stamps) + ' ziyaret kaldı.');
+  const title = join ? 'Hoş geldin, ' + me.name.split(' ')[0] + '!' : res.up ? 'Tebrikler, artık ' + t.name + ' üyesin!' : 'Ziyaretin sayıldı';
+  S.flash = {kind:'visit', join, name:me.name, tier:t.id, tierName:t.name, text: res.earned ? 'Bedava kahve kazandı' : 'Bedava kahveye ' + (t.every - me.stamps) + ' ziyaret', until: Date.now() + 5000};
+  renderTablet();
+  showResult(true, title, lines, {tier:t.id, up: res.up});
+}
+function submitSignup(e){
+  e.preventDefault();
+  const name = $('#f-name').value.trim(), raw = $('#f-phone').value.replace(/\D/g, ''), kvkk = $('#f-kvkk').checked;
+  const phone = /^5\d{9}$/.test(raw) ? '0' + raw : raw;
+  let ok = true;
+  $('#e-name').textContent = name.length >= 2 ? '' : (ok = false, 'Adını yaz, en az 2 harf.');
+  $('#e-phone').textContent = /^05\d{9}$/.test(phone) ? '' : (ok = false, 'Numarayı 05 ile başlayan 11 hane olarak yaz.');
+  $('#e-kvkk').textContent = kvkk ? '' : (ok = false, 'Kayıt için bu onay gerekli.');
+  if (!ok) return;
+  const bd = $('#f-bday').value;
+  const me = {id:uid('m'), sample:false, name: name.charAt(0).toLocaleUpperCase('tr-TR') + name.slice(1), phone: phone.replace(/^(\d{4})(\d{3})(\d{2})(\d{2})$/, '$1 $2 $3 $4'), visits:[], stamps:0, rewards:[], marketing: $('#f-mkt').checked, bday: bd ? bd.slice(5) : null, joined: today()};
+  addReward(me, 'hosgeldin', 'Hoş geldin kahvesi');
+  S.customers.unshift(me); S.me = me.id;
+  log('join', 'Yeni üye: ' + me.name);
+  S.phone.screen = 'card';
+  $('#pcontent').innerHTML = '';
+  if (S.pending){ S.pending = null; visitDone(me, addVisit(me), true); }
+  else renderAll();
+}
+
+/* Kaydırarak kullanma */
+function bindSlider(){
+  const knob = $('#knob'), slide = $('#slide'), fill = $('#sfill');
+  if (!knob) return;
+  let sx = 0, x = 0, drag = false;
+  const max = () => slide.clientWidth - 60;
+  const set = v => { x = Math.max(0, Math.min(max(), v)); knob.style.transform = 'translateX(' + x + 'px)'; fill.style.width = (x + 60) + 'px'; };
+  knob.addEventListener('pointerdown', e => { drag = true; sx = e.clientX - x; knob.setPointerCapture(e.pointerId); knob.style.transition = 'none'; fill.style.transition = 'none'; });
+  knob.addEventListener('pointermove', e => { if (drag) set(e.clientX - sx); });
+  const end = () => { if (!drag) return; drag = false; if (x >= max() * .9){ set(max()); redeemNow(); } else { knob.style.transition = 'transform .2s'; fill.style.transition = 'width .2s'; set(0); } };
+  knob.addEventListener('pointerup', end); knob.addEventListener('pointercancel', end);
+  knob.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); set(max()); redeemNow(); } });
+  knob.focus({preventScroll:true});
+}
+function redeemNow(){
+  const me = getMe(), o = S.phone.overlay; if (!me || !o) return;
+  const rw = me.rewards.find(r => r.id === o.rid); if (!rw || rw.used != null) return;
+  rw.used = today(); rw.usedAt = fmtTime(true);
+  const t = tierOf(me);
+  log('reward', me.name + ' ödül kullandı: ' + rw.label);
+  S.flash = {kind:'reward', name:me.name, label:rw.label, time:rw.usedAt, tier:t.id, until: Date.now() + 9000};
+  S.phone.overlay = {type:'confirm', rid:rw.id};
+  renderTablet(); renderPhone();
+}
+
+/* Sahip paneli */
+function renderPanel(){
+  const cs = S.customers, d = today(), ts = tiersSorted(), w = S.settings.windowDays;
+  const total = cs.length;
+  const active30 = cs.filter(c => c.visits.some(v => v > d - 30 && v <= d)).length;
+  const used30 = cs.reduce((a, c) => a + c.rewards.filter(r => r.used != null && r.used > d - 30).length, 0);
+  const dist = ts.map(t => ({t, n: cs.filter(c => tierOf(c).id === t.id).length}));
+  const gold = dist.find(x => x.t.id === 'altin').n;
+  const lastOf = c => c.visits.length ? c.visits[c.visits.length - 1] : c.joined;
+  const top = [...cs].sort((a, b) => recentCount(b) - recentCount(a) || lastOf(b) - lastOf(a)).slice(0, 7);
+  const lapsed = cs.filter(c => d - lastOf(c) > 30).sort((a, b) => lastOf(a) - lastOf(b)).slice(0, 7);
+  const lapsedAll = cs.filter(c => d - lastOf(c) > 30).length;
+  const nm = c => esc(c.name) + (c.sample ? '' : ' <span class="pill">sen</span>');
+  $('#panel-data').innerHTML = `
+  <div class="phead"><div><h2>Sahip paneli</h2><p class="muted">${esc(S.settings.cafe)} · ${fmtDay(d, {day:'numeric', month:'long', year:'numeric'})}</p></div><span class="tag">Örnek veriler</span></div>
+  <div class="kpis">
+    <div class="kpi"><b>${total}</b><span>toplam üye</span></div>
+    <div class="kpi"><b>${active30}</b><span>son 30 günde gelen üye</span></div>
+    <div class="kpi"><b>${used30}</b><span>son 30 günde kullanılan ödül</span></div>
+    <div class="kpi"><b>${gold}</b><span>Altın üye · üyelerin %${total ? Math.round(gold / total * 100) : 0}'i</span></div>
+  </div>
+  <div class="card"><h3>Seviye dağılımı</h3>
+    <div class="distbar" role="img" aria-label="${dist.map(x => x.t.name + ' ' + x.n).join(', ')}">${dist.filter(x => x.n).map(x => `<i style="--tc:var(--t-${x.t.id});flex:${x.n}" title="${x.t.name}: ${x.n}"></i>`).join('')}</div>
+    <ul class="legend">${dist.map(x => `<li style="--tc:var(--t-${x.t.id})"><i></i>${x.t.name} <b>${x.n}</b></li>`).join('')}</ul>
+    <p class="small muted">Seviyeler son ${w} gündeki ziyaret sayısına göre her gün yeniden hesaplanır.</p>
+  </div>
+  <div class="cols">
+    <div class="card"><h3>En sadık müşteriler</h3><div class="tablewrap"><table><thead><tr><th>Müşteri</th><th>Seviye</th><th class="num">${w} gün</th><th>Son ziyaret</th></tr></thead><tbody>
+      ${top.map(c => { const t = tierOf(c); return `<tr><td>${nm(c)}</td><td><span class="pill" style="--tc:var(--t-${t.id})">${t.name}</span></td><td class="num">${recentCount(c)}</td><td>${rel(lastOf(c))}</td></tr>`; }).join('')}
+    </tbody></table></div></div>
+    <div class="card"><h3>30 günden uzun süredir gelmeyenler · ${lapsedAll}</h3><div class="tablewrap"><table><thead><tr><th>Müşteri</th><th>Son ziyaret</th><th>SMS izni</th></tr></thead><tbody>
+      ${lapsed.map(c => `<tr><td>${nm(c)}</td><td>${rel(lastOf(c))}</td><td>${c.marketing ? '<span class="pill" style="--tc:var(--ok)">Var</span>' : '<span class="pill" style="--tc:var(--muted)">Yok</span>'}</td></tr>`).join('') || '<tr><td colspan="3" class="muted">Herkes son 30 günde gelmiş.</td></tr>'}
+    </tbody></table></div>
+    <p class="note">İleride bu müşterilere "seni özledik" kuponu gönderilebilir. SMS için İYS kaydı ve müşterinin ayrı pazarlama izni gerekir.</p></div>
+  </div>`;
+}
+function renderSettings(){
+  const s = S.settings, t = id => s.tiers.find(x => x.id === id);
+  $('#panel-settings').innerHTML = `<div class="card settings"><h3>Program ayarları</h3><p class="small muted" style="margin-bottom:14px">Değiştirdiğin anda tablet, telefon ve bu panel yeniden hesaplanır.</p>
+  <div class="sgrid">
+    <label for="set-cafe">Kafe adı<input id="set-cafe" value="${esc(s.cafe)}"></label>
+    <label for="set-window">Seviye penceresi<select id="set-window">${[60,90,120].map(v => `<option value="${v}" ${v === s.windowDays ? 'selected' : ''}>Son ${v} gün</option>`).join('')}</select></label>
+  </div>
+  <div class="tablewrap"><table><thead><tr><th>Seviye</th><th>Alt sınır (ziyaret)</th><th>Her kaçıncı kahve bedava</th></tr></thead><tbody>
+    <tr><td><span class="pill" style="--tc:var(--t-yeni)">Yeni</span></td><td class="muted">0 (kayıt)</td><td><input id="set-every-yeni" type="number" min="2" max="20" value="${t('yeni').every}" aria-label="Yeni: her kaçıncı kahve bedava"></td></tr>
+    <tr><td><span class="pill" style="--tc:var(--t-mudavim)">Müdavim</span></td><td><input id="set-min-mudavim" type="number" min="1" max="60" value="${t('mudavim').min}" aria-label="Müdavim alt sınırı"></td><td><input id="set-every-mudavim" type="number" min="2" max="20" value="${t('mudavim').every}" aria-label="Müdavim: her kaçıncı kahve bedava"></td></tr>
+    <tr><td><span class="pill" style="--tc:var(--t-altin)">Altın</span></td><td><input id="set-min-altin" type="number" min="2" max="90" value="${t('altin').min}" aria-label="Altın alt sınırı"></td><td><input id="set-every-altin" type="number" min="2" max="20" value="${t('altin').every}" aria-label="Altın: her kaçıncı kahve bedava"></td></tr>
+  </tbody></table></div>
+  <p class="err" id="set-err"></p>
+  <div class="actions"><button class="chip" data-act="defaults">Varsayılan ayarlara dön</button></div></div>`;
+}
+function applySettings(){
+  const v = id => parseInt($('#' + id).value, 10);
+  const mm = v('set-min-mudavim'), ma = v('set-min-altin'), ey = v('set-every-yeni'), em = v('set-every-mudavim'), ea = v('set-every-altin');
+  let err = '';
+  if ([mm, ma, ey, em, ea].some(x => !Number.isFinite(x))) err = 'Tüm sayı kutularını doldur.';
+  else if (mm < 1) err = 'Müdavim alt sınırı en az 1 olmalı.';
+  else if (ma <= mm) err = 'Altın alt sınırı Müdavim\'den büyük olmalı.';
+  else if ([ey, em, ea].some(x => x < 2 || x > 20)) err = 'Bedava kahve aralığı 2 ile 20 arasında olmalı.';
+  $('#set-err').textContent = err;
+  const s = S.settings;
+  s.cafe = $('#set-cafe').value.trim() || 'Örnek Kafe';
+  s.windowDays = v('set-window');
+  if (!err){
+    const t = id => s.tiers.find(x => x.id === id);
+    t('mudavim').min = mm; t('altin').min = ma; t('yeni').every = ey; t('mudavim').every = em; t('altin').every = ea;
+  }
+  renderPanel(); renderTablet(); renderPhone();
+}
+
+/* Genel */
+function renderAll(){ $('#simdate').textContent = fmtDay(today(), {weekday:'short', day:'numeric', month:'long', year:'numeric'}) + (offset ? ' (+' + offset + ' gün)' : ''); renderTablet(); renderPhone(); renderPanel(); }
+function tick(){
+  if (!S) return;
+  const now = new Date();
+  document.querySelectorAll('[data-clock]').forEach(e => { e.textContent = fmtTime(e.dataset.clock === 'hms', now); });
+  if (S.token){
+    const rem = S.token.exp - Date.now();
+    if (rem <= 0){ S.token = null; log('warn', 'Ziyaret kodu kullanılmadan kapandı'); renderTablet(); renderPhone(); return; }
+    const s = Math.ceil(rem / 1000), cd = $('#cd'), bar = $('#cdbar');
+    if (cd) cd.textContent = s >= 60 ? '1:00' : '0:' + String(s).padStart(2, '0');
+    if (bar){ bar.style.width = (rem / 600) + '%'; bar.classList.toggle('low', s <= 15); }
+  }
+  if (S.flash && Date.now() > S.flash.until){ S.flash = null; renderTablet(); }
+}
+setInterval(tick, 250);
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  const act = a.dataset.act;
+  if (act === 'close-bg'){ if (e.target === a){ S.phone.overlay = null; renderPhone(); } return; }
+  switch (act){
+    case 'view': {
+      const v = a.dataset.v;
+      $('#view-akis').hidden = v !== 'akis'; $('#view-panel').hidden = v !== 'panel';
+      document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === v)));
+      if (v === 'panel') renderPanel();
+      break;
+    }
+    case 'issue': issueToken(); break;
+    case 'close-token': S.token = null; renderTablet(); renderPhone(); break;
+    case 'scan': startScan(false); break;
+    case 'cheat': {
+      document.querySelector('[data-v="akis"]').click();
+      startScan(true); break;
+    }
+    case 'demo-login': {
+      const c = S.customers.find(x => x.sample && tierOf(x).id === 'mudavim' && !x.visits.includes(today())) || S.customers.find(x => x.sample);
+      const t = tierOf(c);
+      c.stamps = t.every - 1;
+      if (!c.rewards.some(r => r.used == null)) c.rewards.push({id:uid('r'), kind:'kahve', label:'Bedava kahve', earned: c.visits[c.visits.length - 1], used:null});
+      S.me = c.id; S.phone.overlay = null; renderPhone();
+      ptoast(c.name + ' olarak giriş yapıldı');
+      break;
+    }
+    case 'back': S.pending = null; S.phone.screen = 'welcome'; $('#pcontent').innerHTML = ''; renderPhone(); break;
+    case 'logout': S.me = null; S.phone.screen = 'welcome'; S.phone.overlay = null; renderPhone(); ptoast('Çıkış yapıldı'); break;
+    case 'redeem': S.phone.overlay = {type:'redeem', rid: a.dataset.id}; renderPhone(); break;
+    case 'close-ov': S.phone.overlay = null; renderPhone(); break;
+    case 'day': {
+      const n = parseInt(a.dataset.n, 10);
+      offset += n; S.token = null; S.flash = null; S.phone.overlay = null;
+      const me = getMe(); if (me) checkBirthday(me);
+      renderAll(); ptoast(n + ' gün ileri gidildi');
+      break;
+    }
+    case 'reset': reset(); ptoast('Demo baştan başladı'); break;
+    case 'defaults': S.settings = Object.assign(DEFAULTS(), {cafe:S.settings.cafe}); renderSettings(); renderAll(); break;
+  }
+});
+document.addEventListener('submit', e => { if (e.target.id === 'signup') submitSignup(e); });
+document.addEventListener('input', e => { if (e.target.closest('#panel-settings')) applySettings(); });
+document.addEventListener('change', e => { if (e.target.id === 'set-window') applySettings(); });
+
+reset();
+})();
+</script>
